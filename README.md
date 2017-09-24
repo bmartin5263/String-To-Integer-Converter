@@ -9,6 +9,6 @@ __Usage:__
 $ python3 main.py <string/integer>
 ```
 This repository includes the following python modules:
-* main.py
+* string_to_integer_converter.py
 
 This program does not require the download of any third-party modules and only uses standard Python library modules.

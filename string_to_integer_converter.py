@@ -287,4 +287,4 @@ if __name__ == '__main__':
             sentence = str(sys.argv[1])
             print(str_to_int(sentence))
     else:
-        print('USAGE: main.py "<string/integer>"')
+        print('USAGE: string_to_integer_converterstring_to_integer_converter.py "<string/integer>"')
