@@ -14,12 +14,11 @@ def isNumber(value):
                 return False
     return True
 
-def str_to_int(sentence):
+def str_to_int(raw_sentence):
     """Returns spelled-out numbers as integers.
 return_int: Return an integer rather than a string."""
 
     number_conversion_table = {
-
         'negative': '0',
         '': '0',
         'and': '0',
@@ -77,67 +76,41 @@ return_int: Return an integer rather than a string."""
              'quadrillion', 'quintillion', 'sextillion', 'septillion', 'octillion',
              'nonillion', 'decillion', 'undecillion', 'duodecillion', 'tredecillion',
              'quattuordecillion', 'k']
-    sub_flags = ['hundred']
 
-    section = 0
+    current_section = 0
     sections = []
-    hundred_flag = False  # detected value 'hundred'
-    negative_flag = False  # detected value 'negative'
-    currency_flag = False  # detected value 'dollar'
+    negative_flag = False
 
-    sentence = sentence.replace('-', ' ').split(' ')  # allow spaces and hyphens
-    lowered_sentence = []
+    raw_sentence = raw_sentence.replace('-', ' ').split(' ')  # allow spaces and hyphens
+    sentence_list = []
 
-    for i in sentence:
-        lowered_sentence.append(i.lower())
+    for i in raw_sentence:
+        sentence_list.append(i.lower())
 
-    sentence = lowered_sentence  # create list of words in lowercase
-
-    for word in sentence:
-
-        if word in ['point', 'dot']:
-            raise FloatingPointError('Sentence must represent an integer.')
-
-        while True:
-            try:
-                number = number_conversion_table[word]
-                if word == 'negative':  # detect negative
-                    negative_flag = True
-                if word in ['dollar', 'dollars', 'k']:
-                    currency_flag = True
-                break
-            except KeyError:
-                print("{} is not a numerical word.".format(word))
-                exit()
+    for word in sentence_list:
+        if word in number_conversion_table.keys():
+            number = number_conversion_table[word]
+            if word == 'negative':
+                negative_flag = True
+        else:
+            raise ValueError("{} is not a valid word.".format(word))
 
         if word in flags:
-            section = str(section)
-            section += number
-            if word in sub_flags:
-                hundred_flag = True
+            current_section = str(current_section)
+            current_section += number
+            if word != 'hundred':
+                sections.append(int(current_section))
+                current_section = 0
 
         else:
-            section = int(section) + int(number)
+            current_section = int(current_section) + int(number)
 
-        if word in flags and hundred_flag == False:
-            sections.append(int(section))
-            section = 0
-
-        hundred_flag = False
-
-    sections.append(int(section))
-
+    sections.append(int(current_section))
     output = sum(sections)
 
     if negative_flag:
         output = 0 - output
-
-    if currency_flag:
-        output = format(output, ',d')
-        return '$' + output
-
-    else:
-        return output
+    return output
 
 
 def int_to_str(number):
