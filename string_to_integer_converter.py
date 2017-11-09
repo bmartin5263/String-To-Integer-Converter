@@ -15,8 +15,7 @@ def isNumber(value):
     return True
 
 def str_to_int(raw_sentence):
-    """Returns spelled-out numbers as integers.
-return_int: Return an integer rather than a string."""
+    """Returns spelled-out numbers as integers."""
 
     number_conversion_table = {
         'negative': '0',
